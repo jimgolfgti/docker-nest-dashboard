@@ -1,0 +1,1 @@
+# A Nest thermostat dashboard, running on docker, built with PHP, InfluxDB and Grafana.

@@ -1,0 +1,8 @@
+{
+    "require": {
+        "silex/silex": "~1.2",
+        "crodas/influx-php": "dev-master",
+        "gboudreau/nest-api": "dev-master",
+        "hassankhan/config": "dev-master"
+    }
+}
