@@ -13,3 +13,8 @@
 docker-compose up
 ```
 
+## Todo
+* Guide on how to get this running in no-time on Tutum Cloud
+* Better scheduler
+* Track current outside temperature/humidity
+* Insert default dashboard/graphs for Nest data
