@@ -1,10 +1,10 @@
 web:
   build: .
-  command: /run.sh
   links:
    - influxdb
-  ports:
-   - "80:80"
+  environment:
+    - NEST_USERNAME=username
+    - NEST_PASSWORD=password
 
 influxdb:
   image: tutum/influxdb
@@ -13,6 +13,7 @@ influxdb:
     - "8086:8086"
   environment:
     - PRE_CREATE_DB=nest
+    - INFLUXDB_VERSION=0.8.8
 
 grafana:
   image: grafana/grafana

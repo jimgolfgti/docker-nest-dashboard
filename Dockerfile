@@ -1,24 +1,26 @@
 FROM ubuntu:trusty
 MAINTAINER Joeri Verdeyen <info@jverdeyen.be>
 
+ENV NEST_USERNAME test@test.be
+ENV NEW_PASSWORD password
+
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install \
         curl \
         git \
-        apache2 \
-        libapache2-mod-php5 &&\
+        php5-cli \
+        php5-curl &&\
     rm -rf /var/lib/apt/lists/* && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
-    sed -i "s/variables_order.*/variables_order = \"EGPCS\"/g" /etc/php5/apache2/php.ini && \
-    printf "#!/bin/bash\n chown www-data:www-data /app -R\n source /etc/apache2/envvars \n tail -F /var/log/apache2/* &\n exec apache2 -D FOREGROUND" > /run.sh && \
-    chmod 755 /run.sh && \
-    mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
+COPY ./nest-dashboard/ /nest-dashboard
 
-VOLUME app/:/app
-WORKDIR /app
-RUN composer install --no-dev --prefer-source
+WORKDIR /nest-dashboard
+
+ADD run.sh /run.sh
+RUN chmod +x /run.sh
+
+RUN composer install --no-dev -o -n
 EXPOSE 80
 
 CMD ["/run.sh"]
