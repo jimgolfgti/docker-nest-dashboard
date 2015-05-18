@@ -2,7 +2,8 @@ FROM ubuntu:trusty
 MAINTAINER Joeri Verdeyen <info@jverdeyen.be>
 
 ENV NEST_USERNAME test@test.be
-ENV NEW_PASSWORD password
+ENV NEST_PASSWORD password
+ENV OPENWEATHERMAP_CITYID 5128581
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install \
@@ -19,8 +20,6 @@ WORKDIR /nest-dashboard
 
 ADD run.sh /run.sh
 RUN chmod +x /run.sh
-
 RUN composer install --no-dev -o -n
-EXPOSE 80
 
 CMD ["/run.sh"]

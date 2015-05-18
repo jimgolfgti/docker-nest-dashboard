@@ -6,6 +6,8 @@ require_once __DIR__.'/../vendor/gboudreau/nest-api/nest.class.php';
 
 $app = new Silex\Application();
 
+$app->register(new DerAlex\Silex\YamlConfigServiceProvider(__DIR__ . '/config/config.yml'));
+
 $app->register(new ConsoleServiceProvider(), array(
     'console.name' => 'NestDashboard',
     'console.version' => '1.0.0',

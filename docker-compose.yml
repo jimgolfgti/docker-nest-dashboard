@@ -5,6 +5,7 @@ web:
   environment:
     - NEST_USERNAME=username
     - NEST_PASSWORD=password
+    - OPENWEATHERMAP_CITYID=2796716 #http://openweathermap.org/city - take id from url after search
 
 influxdb:
   image: tutum/influxdb
