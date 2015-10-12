@@ -64,7 +64,8 @@ class FetchCommand extends Command
     public function pushOpenWeatherData($db)
     {
         $owm = new OpenWeatherMap();
-        $weather = $owm->getWeather($this->getApplication()->getSilexApplication()['config']['openweather']['city_id'], 'metric', 'en');
+        $config = $this->getApplication()->getSilexApplication()['config']['openweather'];
+        $weather = $owm->getWeather($config['city_id'], 'metric', 'en', $config['app_id']);
         $temperature = $weather->temperature->now->getValue();
         $humidity = $weather->humidity->getValue();
         $pressure = $weather->pressure->getValue();
