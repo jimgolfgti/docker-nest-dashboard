@@ -1,7 +1,7 @@
 {
     "require": {
         "silex/silex": "~1.2",
-        "crodas/influx-php": "0.1.*",
+        "crodas/influx-php": "^0.9",
         "gboudreau/nest-api": "dev-master",
         "knplabs/console-service-provider": "dev-master",
         "deralex/yaml-config-service-provider": "1.0.x-dev",

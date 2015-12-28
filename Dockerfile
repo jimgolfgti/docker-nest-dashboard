@@ -1,9 +1,10 @@
 FROM ubuntu:trusty
 MAINTAINER Joeri Verdeyen <info@jverdeyen.be>
 
-ENV NEST_USERNAME test@test.be
-ENV NEST_PASSWORD password
-ENV OPENWEATHERMAP_CITYID 5128581
+ENV NEST_USERNAME=test@test.be \
+    NEST_PASSWORD=password \
+    OPENWEATHERMAP_CITYID=5128581 \
+    OPENWEATHERMAP_APPID=abc123
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq install \

@@ -3,9 +3,9 @@ web:
   links:
    - influxdb
   environment:
-    - NEST_USERNAME=username
-    - NEST_PASSWORD=password
-    - OPENWEATHERMAP_CITYID=2796716 #http://openweathermap.org/city - take id from url after search
+    - NEST_USERNAME=
+    - NEST_PASSWORD=
+    - OPENWEATHERMAP_CITYID= #http://openweathermap.org/city - take id from url after search
     - OPENWEATHERMAP_APPID=
 
 influxdb:
@@ -15,7 +15,6 @@ influxdb:
     - "8086:8086"
   environment:
     - PRE_CREATE_DB=nest
-    - INFLUXDB_VERSION=0.8.8
 
 grafana:
   image: grafana/grafana
