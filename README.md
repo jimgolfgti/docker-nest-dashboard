@@ -1,4 +1,4 @@
-[![Deploy to Tutum](https://s.tutum.co/deploy-to-tutum.svg)](https://dashboard.tutum.co/stack/deploy/)
+[![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/)
 
 # A Nest thermostat dashboard, running on docker, built with PHP, InfluxDB and Grafana.
 
