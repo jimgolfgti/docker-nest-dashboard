@@ -1,24 +1,33 @@
-web:
-  build: .
-  links:
-   - influxdb
-  environment:
-    - NEST_USERNAME=
-    - NEST_PASSWORD=
-    - OPENWEATHERMAP_CITYID= #http://openweathermap.org/city - take id from url after search
-    - OPENWEATHERMAP_APPID=
+version: "3.2"
 
-influxdb:
-  image: tutum/influxdb
-  ports:
-    - "8083:8083"
-    - "8086:8086"
-  environment:
-    - PRE_CREATE_DB=nest
+services:
+  web:
+    build: .
+    depends_on:
+      - influxdb
+    environment:
+      - NEST_USERNAME=${NEST_USERNAME-}
+      - NEST_PASSWORD=${NEST_PASSWORD-}
+      - OPENWEATHERMAP_CITYID=${OPENWEATHERMAP_CITYID-} #http://openweathermap.org/city - take id from url after search
+      - OPENWEATHERMAP_APPID=${OPENWEATHERMAP_APPID-}
 
-grafana:
-  image: grafana/grafana
-  ports:
-    - "3000:3000"
-  links:
-    - influxdb
+  influxdb:
+    image: influxdb:1.5-alpine
+    ports:
+      - "8086"
+    environment:
+      - INFLUXDB_DB=nest
+      - INFLUXDB_HTTP_AUTH_ENABLED=true
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin
+      - INFLUXDB_READ_USER=grafana
+      - INFLUXDB_READ_USER_PASSWORD=grafana
+      - INFLUXDB_WRITE_USER=web
+      - INFLUXDB_WRITE_USER_PASSWORD=web
+
+  grafana:
+    image: grafana/grafana:5.1.2
+    ports:
+      - "3000:3000"
+    depends_on:
+      - influxdb

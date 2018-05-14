@@ -28,7 +28,7 @@ class FetchCommand extends Command
 
     public function fetch(OutputInterface $output)
     {
-        $client = new Client("influxdb", 8086, "root", "root");
+        $client = new Client("influxdb", 8086, "web", "web");
         $db = $client->selectDB("nest");
 
         try {
