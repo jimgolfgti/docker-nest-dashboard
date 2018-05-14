@@ -1,0 +1,24 @@
+apiVersion: 1
+
+deleteDatasources:
+  - name: Nest
+    orgId: 1
+
+datasources:
+- name: Nest
+  type: influxdb
+  access: proxy
+  orgId: 1
+  url: http://influxdb:8086
+  user: grafana
+  password: grafana
+  database: nest
+  basicAuth: true
+  basicAuthUser: grafana
+  basicAuthPassword: grafana
+  withCredentials: true
+  isDefault: true
+  jsonData:
+    timeInterval: 1m
+  version: 1
+  editable: false

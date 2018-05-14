@@ -27,6 +27,9 @@ services:
 
   grafana:
     image: grafana/grafana:5.1.2
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/grafana/dashboards
     ports:
       - "3000:3000"
     depends_on:
