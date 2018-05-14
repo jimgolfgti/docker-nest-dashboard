@@ -6,6 +6,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use InfluxDB\Client;
+use InfluxDB\Database;
+use InfluxDB\Point;
 use Cmfcmf\OpenWeatherMap;
 use Cmfcmf\OpenWeatherMap\Exception as OWMException;
 
@@ -25,8 +28,8 @@ class FetchCommand extends Command
 
     public function fetch(OutputInterface $output)
     {
-        $influxDBClient = new \crodas\InfluxPHP\Client("influxdb", 8086, "root", "root");
-        $db = $influxDBClient->nest;
+        $client = new Client("influxdb", 8086, "root", "root");
+        $db = $client->selectDB("nest");
 
         try {
             $this->pushNestData($db);
@@ -45,7 +48,7 @@ class FetchCommand extends Command
 
     }
 
-    public function pushNestData($db)
+    public function pushNestData(Database $db)
     {
         define('USERNAME', $this->getApplication()->getSilexApplication()['config']['nest']['username']);
         define('PASSWORD', $this->getApplication()->getSilexApplication()['config']['nest']['password']);
@@ -56,12 +59,15 @@ class FetchCommand extends Command
         $humidity = $info->current_state->humidity;
         $state = $info->target->mode;
 
-        $db->insert("temperature", [ 'fields' => array('value' => $temperature)]);
-        $db->insert("humidity", [ 'fields' => array('value' => $humidity)]);
-        $db->insert("state", [ 'fields' => array('value' => $state)]);
+        $points = [
+          new Point("temperature", $temperature),
+          new Point("humidity", $humidity),
+          new Point("state", $state)
+        ];
+        $this->sendPoints($db, $points);
     }
 
-    public function pushOpenWeatherData($db)
+    public function pushOpenWeatherData(Database $db)
     {
         $owm = new OpenWeatherMap();
         $config = $this->getApplication()->getSilexApplication()['config']['openweather'];
@@ -73,11 +79,19 @@ class FetchCommand extends Command
         $clouds = $weather->clouds->getValue();
         $precipitation = $weather->precipitation->getValue();
 
-        $db->insert("outside.temperature", [ 'fields' => array('value' => $temperature)]);
-        $db->insert("outside.humidity", [ 'fields' => array('value' => $humidity)]);
-        $db->insert("outside.pressure", [ 'fields' => array('value' => $pressure)]);
-        $db->insert("outside.wind", [ 'fields' => array('value' => $wind)]);
-        $db->insert("outside.clouds", [ 'fields' => array('value' => $clouds)]);
-        $db->insert("outside.precipitation", [ 'fields' => array('value' => $precipitation)]);
+        $points = [
+          new Point("outside.temperature", $temperature),
+          new Point("outside.humidity", $humidity),
+          new Point("outside.pressure", $pressure),
+          new Point("outside.wind", $wind),
+          new Point("outside.clouds", $clouds),
+          new Point("outside.precipitation", $precipitation)
+        ];
+        $this->sendPoints($db, $points);
+    }
+
+    private function sendPoints(Database $db, array $points)
+    {
+      $db->writePoints($points, Database::PRECISION_MINUTES);
     }
 }
