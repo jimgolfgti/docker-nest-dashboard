@@ -1,26 +1,18 @@
-FROM ubuntu:trusty
-MAINTAINER Joeri Verdeyen <info@jverdeyen.be>
+FROM php:5.6-cli-alpine
 
 ENV NEST_USERNAME=test@test.be \
     NEST_PASSWORD=password \
     OPENWEATHERMAP_CITYID=5128581 \
-    OPENWEATHERMAP_APPID=abc123
+    OPENWEATHERMAP_APPID=abc123 \
+    DEFAULT_TIMEZONE=UTC
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get -yq install \
-        curl \
-        git \
-        php5-cli \
-        php5-curl &&\
-    rm -rf /var/lib/apt/lists/* && \
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY ./nest-dashboard/ /nest-dashboard
-
+COPY nest-dashboard/composer.* /nest-dashboard/
 WORKDIR /nest-dashboard
-
-ADD run.sh /run.sh
-RUN chmod +x /run.sh
 RUN composer install --no-dev -o -n
 
-CMD ["/run.sh"]
+COPY nest-dashboard/ /nest-dashboard
+
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

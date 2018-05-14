@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 mkdir -p /nest-dashboard/app/config
+echo date.timezone = \"$DEFAULT_TIMEZONE\">/usr/local/etc/php/conf.d/timezone.ini
 
 while true
 do

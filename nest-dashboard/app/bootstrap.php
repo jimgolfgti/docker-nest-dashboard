@@ -10,7 +10,7 @@ $app->register(new DerAlex\Silex\YamlConfigServiceProvider(__DIR__ . '/config/co
 
 $app->register(new ConsoleServiceProvider(), array(
     'console.name' => 'NestDashboard',
-    'console.version' => '1.0.0',
+    'console.version' => '1.1.0',
     'console.project_directory' => __DIR__.'/..',
 ));
 
