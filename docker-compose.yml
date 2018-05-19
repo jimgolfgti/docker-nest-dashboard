@@ -8,8 +8,8 @@ services:
     environment:
       - NEST_USERNAME=${NEST_USERNAME-}
       - NEST_PASSWORD=${NEST_PASSWORD-}
-      - OPENWEATHERMAP_CITYID=${OPENWEATHERMAP_CITYID-} #http://openweathermap.org/city - take id from url after search
-      - OPENWEATHERMAP_APPID=${OPENWEATHERMAP_APPID-}
+      - OPENWEATHERMAP_CITYID=${OPENWEATHERMAP_CITYID-} # http://openweathermap.org/city - take id from url after search
+      - OPENWEATHERMAP_APPID=${OPENWEATHERMAP_APPID-}   # https://home.openweathermap.org/api_keys - get from your account
 
   influxdb:
     image: influxdb:1.5-alpine

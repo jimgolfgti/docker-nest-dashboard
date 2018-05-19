@@ -1,5 +1,3 @@
-[![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/)
-
 # A Nest thermostat dashboard, running on docker, built with PHP, InfluxDB and Grafana.
 
 ![](example.jpg)
@@ -7,16 +5,16 @@
 ## Getting started
 
 * Install docker
-* Install docker-compose
+* Create `.env` file to configure your Nest and OpenWeatherMap credentials
+```sh
+NEST_USERNAME=user@example.com
+NEST_PASSWORD=somepassword
+OPENWEATHERMAP_APPID=a1b2c3d4e5f6 # https://home.openweathermap.org/api_keys
+OPENWEATHERMAP_CITYID=2643743     # https://openweathermap.org/city/2643743
+```
 
 ## Build the stack
 
 ```
 docker-compose up
 ```
-
-## Todo
-* Guide on how to get this running in no-time on Tutum Cloud
-* Better scheduler
-* Track current outside temperature/humidity
-* Insert default dashboard/graphs for Nest data
