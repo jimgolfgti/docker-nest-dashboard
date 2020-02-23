@@ -35,6 +35,7 @@ class FetchCommand extends Command
             $this->pushNestData($db);
             $output->writeln("Pushed Nest Data to InfluxDB");
         } catch (\RuntimeException $e) {
+            $this->ensureCache($output);
             $output->writeln("Waiting for InfluxDB... to push Nest data");
         }
 
@@ -44,8 +45,26 @@ class FetchCommand extends Command
         } catch (\RuntimeException $e) {
             $output->writeln("Waiting for InfluxDB... to push Open Weather data");
         }
+    }
 
+    public function ensureCache(OutputInterface $output)
+    {
+        $json = file_get_contents(sys_get_temp_dir() . '/secrets/session.json');
+        if ($json === False) return;
+        $o = json_decode($json);
 
+        $username = $this->getApplication()->getSilexApplication()['config']['nest']['username'];
+        $password = $this->getApplication()->getSilexApplication()['config']['nest']['password'];
+        $cache_file = sys_get_temp_dir() . '/nest_php_cache_' . md5($username . $password);
+        $vars = array(
+             'transport_url' => $o->urls->transport_url,
+             'access_token' => $o->access_token,
+             'user' => $o->user,
+             'userid' => $o->userid,
+             'cache_expiration' => strtotime($o->expires_in)
+        );
+        file_put_contents($cache_file, serialize($vars));
+        $output->writeln('Wrote to cache file. Expires: ' . $o->expires_in);
     }
 
     public function pushNestData(Database $db)
